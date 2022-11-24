@@ -718,18 +718,21 @@
 {
     XLFormRowDescriptor *rowDescriptor = [self.form formRowAtIndex:indexPath];
     Class cellClass = [[rowDescriptor cellForFormController:self] class];
-    if ([cellClass respondsToSelector:@selector(formDescriptorCellHeightForRowDescriptor:)]){
-        return [cellClass formDescriptorCellHeightForRowDescriptor:rowDescriptor];
-    }
+	[rowDescriptor cellForFormController:self];
+	CGFloat height = rowDescriptor.height;
+	 if (height != XLFormUnspecifiedCellHeight){
+		 return height;
+	  }
     return self.tableView.rowHeight;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     XLFormRowDescriptor *rowDescriptor = [self.form formRowAtIndex:indexPath];
-    Class cellClass = [[rowDescriptor cellForFormController:self] class];
-    if ([cellClass respondsToSelector:@selector(formDescriptorCellHeightForRowDescriptor:)]){
-        return [cellClass formDescriptorCellHeightForRowDescriptor:rowDescriptor];
+	[rowDescriptor cellForFormController:self];
+	 CGFloat height = rowDescriptor.height;
+	if (height != XLFormUnspecifiedCellHeight){
+	   return height;
     }
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")){
         return self.tableView.estimatedRowHeight;
